@@ -32,6 +32,12 @@ class KM:
             for hour_item in day['hours']:
                 h = hour_item["hour"]
                 flows = hour_item["flows"]  # 修正：从 hour_item 中取 flows
+                # 校验：每小时流向数必须与 flow_names 长度一致，防止 8 维数据错位
+                if len(flows) != num_flows:
+                    raise ValueError(
+                        f"{day.get('day', '?')} 第 {h} 时的 flows 长度 "
+                        f"{len(flows)} 与 flow_names 长度 {num_flows} 不一致: {flows}"
+                    )
                 for f in range(num_flows):
                     hours_flows[h][f].append(flows[f])
 
